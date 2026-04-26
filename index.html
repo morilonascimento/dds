@@ -1,0 +1,2720 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head><base href="https://d16ilfvy4mv02r.cloudfront.net/workspaces/9jVyabEIasV9tvNi1TYdHHivVDvNOgmB/614a51f5-1af9-4b36-a8c9-941e2aad8982/files/">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>DDS – Diálogo Digital de Segurança</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+/* ===================================================
+   CSS CUSTOM PROPERTIES & RESET
+=================================================== */
+:root {
+  --primary: #1a6fc4;
+  --primary-dark: #1259a7;
+  --primary-light: #e8f1fb;
+  --secondary: #0d9e6e;
+  --secondary-light: #e6f7f2;
+  --accent: #f59e0b;
+  --danger: #ef4444;
+  --danger-light: #fef2f2;
+  --warning: #f59e0b;
+  --warning-light: #fffbeb;
+  --success: #10b981;
+  --success-light: #ecfdf5;
+  --bg: #f0f4f8;
+  --surface: #ffffff;
+  --surface2: #f8fafc;
+  --border: #e2e8f0;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --text-light: #94a3b8;
+  --sidebar-bg: #0f172a;
+  --sidebar-text: #cbd5e1;
+  --sidebar-active: #1a6fc4;
+  --sidebar-hover: rgba(255,255,255,0.07);
+  --shadow: 0 1px 3px rgba(0,0,0,0.08),0 4px 16px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --transition: all 0.22s cubic-bezier(.4,0,.2,1);
+  --font: 'Inter', sans-serif;
+}
+[data-theme="dark"] {
+  --bg: #0f172a;
+  --surface: #1e293b;
+  --surface2: #162032;
+  --border: #334155;
+  --text: #f1f5f9;
+  --text-muted: #94a3b8;
+  --text-light: #64748b;
+  --sidebar-bg: #0a0f1e;
+  --primary-light: #1e3a5f;
+  --secondary-light: #0a2d22;
+  --danger-light: #2d1515;
+  --warning-light: #2d2206;
+  --success-light: #0a2d1f;
+  --shadow: 0 1px 3px rgba(0,0,0,0.3),0 4px 16px rgba(0,0,0,0.25);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.4);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);transition:var(--transition);min-height:100vh;line-height:1.5}
+a{text-decoration:none;color:inherit}
+button{font-family:var(--font);cursor:pointer;border:none;outline:none}
+input,select,textarea{font-family:var(--font)}
+ul{list-style:none}
+img{max-width:100%}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--text-light)}
+
+/* ===================================================
+   UTILITY CLASSES
+=================================================== */
+.hidden{display:none!important}
+.flex{display:flex}
+.flex-col{flex-direction:column}
+.items-center{align-items:center}
+.justify-between{justify-content:space-between}
+.justify-center{justify-content:center}
+.gap-1{gap:4px}.gap-2{gap:8px}.gap-3{gap:12px}.gap-4{gap:16px}.gap-6{gap:24px}
+.mt-1{margin-top:4px}.mt-2{margin-top:8px}.mt-3{margin-top:12px}.mt-4{margin-top:16px}
+.mb-2{margin-bottom:8px}.mb-4{margin-bottom:16px}
+.p-2{padding:8px}.p-3{padding:12px}.p-4{padding:16px}
+.w-full{width:100%}
+.text-sm{font-size:13px}
+.text-xs{font-size:11px}
+.font-bold{font-weight:700}
+.font-semibold{font-weight:600}
+.text-muted{color:var(--text-muted)}
+.text-primary{color:var(--primary)}
+.text-success{color:var(--success)}
+.text-danger{color:var(--danger)}
+.text-warning{color:var(--warning)}
+.rounded{border-radius:var(--radius-sm)}
+.card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden}
+.badge{display:inline-flex;align-items:center;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.3px}
+.badge-blue{background:var(--primary-light);color:var(--primary)}
+.badge-green{background:var(--secondary-light);color:var(--secondary)}
+.badge-red{background:var(--danger-light);color:var(--danger)}
+.badge-yellow{background:var(--warning-light);color:var(--warning)}
+
+/* ===================================================
+   AUTH PAGES
+=================================================== */
+#auth-page{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#0f172a 0%,#1a3a6e 50%,#0d4a3a 100%);
+  position:relative;
+  overflow:hidden;
+}
+#auth-page::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.auth-blob{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(80px);
+  opacity:.2;
+  pointer-events:none;
+}
+.auth-blob-1{width:400px;height:400px;background:#1a6fc4;top:-100px;left:-100px}
+.auth-blob-2{width:500px;height:500px;background:#0d9e6e;bottom:-150px;right:-150px}
+.auth-card{
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:24px;
+  padding:48px;
+  width:100%;
+  max-width:440px;
+  position:relative;
+  z-index:1;
+  box-shadow:0 25px 60px rgba(0,0,0,0.4);
+  animation:slideUp .5s ease;
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.auth-logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:32px;
+  justify-content:center;
+}
+.auth-logo-icon{
+  width:52px;height:52px;
+  background:linear-gradient(135deg,#1a6fc4,#0d9e6e);
+  border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;color:#fff;
+  box-shadow:0 8px 24px rgba(26,111,196,0.4);
+}
+.auth-logo-text{color:#fff;font-size:20px;font-weight:800;letter-spacing:-.3px}
+.auth-logo-sub{color:rgba(255,255,255,.5);font-size:11px;letter-spacing:1px;text-transform:uppercase}
+.auth-title{color:#fff;font-size:26px;font-weight:700;margin-bottom:6px}
+.auth-subtitle{color:rgba(255,255,255,.55);font-size:14px;margin-bottom:32px}
+.form-group{margin-bottom:20px}
+.form-label{display:block;color:rgba(255,255,255,.75);font-size:13px;font-weight:500;margin-bottom:8px}
+.form-input{
+  width:100%;padding:13px 16px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:10px;
+  color:#fff;font-size:14px;
+  transition:var(--transition);
+}
+.form-input::placeholder{color:rgba(255,255,255,.3)}
+.form-input:focus{outline:none;border-color:rgba(26,111,196,.8);background:rgba(26,111,196,.12);box-shadow:0 0 0 3px rgba(26,111,196,.2)}
+.input-icon-wrap{position:relative}
+.input-icon-wrap .form-input{padding-left:44px}
+.input-icon-wrap .icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.35);font-size:15px}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;
+  transition:var(--transition);cursor:pointer;
+}
+.btn-primary{
+  background:linear-gradient(135deg,#1a6fc4,#0d9e6e);
+  color:#fff;border:none;
+  box-shadow:0 4px 16px rgba(26,111,196,0.35);
+}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(26,111,196,0.45)}
+.btn-primary:active{transform:translateY(0)}
+.btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{background:var(--surface2);border-color:var(--primary);color:var(--primary)}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-danger:hover{background:#dc2626}
+.btn-success{background:var(--secondary);color:#fff}
+.btn-success:hover{background:#059669}
+.btn-outline{background:transparent;color:var(--primary);border:1px solid var(--primary)}
+.btn-outline:hover{background:var(--primary);color:#fff}
+.btn-sm{padding:7px 14px;font-size:12px}
+.btn-lg{padding:15px 28px;font-size:15px}
+.btn-icon{padding:8px;border-radius:8px;width:34px;height:34px}
+.auth-link{
+  text-align:center;margin-top:24px;
+  color:rgba(255,255,255,.5);font-size:13px;
+}
+.auth-link a{color:rgba(255,255,255,.85);font-weight:600;cursor:pointer}
+.auth-link a:hover{color:#fff}
+.auth-error{
+  background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);
+  color:#fca5a5;border-radius:8px;padding:10px 14px;
+  font-size:13px;margin-bottom:16px;display:flex;align-items:center;gap:8px;
+}
+.auth-success{
+  background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);
+  color:#6ee7b7;border-radius:8px;padding:10px 14px;
+  font-size:13px;margin-bottom:16px;display:flex;align-items:center;gap:8px;
+}
+
+/* ===================================================
+   APP LAYOUT
+=================================================== */
+#app{display:none;min-height:100vh}
+.layout{display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{
+  width:260px;flex-shrink:0;
+  background:var(--sidebar-bg);
+  display:flex;flex-direction:column;
+  position:fixed;top:0;left:0;bottom:0;z-index:100;
+  transition:transform .3s ease;
+  overflow-y:auto;overflow-x:hidden;
+}
+.sidebar-header{
+  padding:24px 20px 20px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  display:flex;align-items:center;gap:12px;
+}
+.sidebar-logo{
+  width:40px;height:40px;
+  background:linear-gradient(135deg,#1a6fc4,#0d9e6e);
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;color:#fff;flex-shrink:0;
+}
+.sidebar-logo-text{flex:1;min-width:0}
+.sidebar-logo-title{color:#fff;font-size:15px;font-weight:700;line-height:1.2}
+.sidebar-logo-sub{color:rgba(255,255,255,.35);font-size:10px;letter-spacing:.8px;text-transform:uppercase}
+.sidebar-nav{flex:1;padding:16px 12px}
+.nav-section{margin-bottom:24px}
+.nav-section-title{
+  color:rgba(255,255,255,.25);font-size:10px;font-weight:700;
+  letter-spacing:1.2px;text-transform:uppercase;
+  padding:0 8px;margin-bottom:8px;
+}
+.nav-item{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 12px;border-radius:10px;
+  color:var(--sidebar-text);font-size:13.5px;font-weight:500;
+  cursor:pointer;transition:var(--transition);margin-bottom:2px;
+  position:relative;
+}
+.nav-item:hover{background:var(--sidebar-hover);color:#fff}
+.nav-item.active{background:rgba(26,111,196,.25);color:#7db9f5}
+.nav-item.active::before{
+  content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:3px;height:20px;background:var(--primary);border-radius:0 2px 2px 0;
+}
+.nav-item i{width:18px;text-align:center;font-size:14px}
+.nav-badge{
+  margin-left:auto;background:var(--danger);color:#fff;
+  font-size:10px;font-weight:700;padding:1px 6px;border-radius:999px;
+}
+.sidebar-footer{
+  padding:16px 20px;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+.user-info{display:flex;align-items:center;gap:10px}
+.user-avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,#1a6fc4,#0d9e6e);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:#fff;font-weight:700;flex-shrink:0;
+}
+.user-name{color:#fff;font-size:13px;font-weight:600;line-height:1.2}
+.user-role{color:rgba(255,255,255,.35);font-size:11px}
+.logout-btn{
+  margin-left:auto;width:30px;height:30px;
+  background:rgba(255,255,255,.06);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:rgba(255,255,255,.4);
+  transition:var(--transition);
+}
+.logout-btn:hover{background:rgba(239,68,68,.2);color:#fca5a5}
+
+/* MAIN CONTENT */
+.main-wrap{flex:1;margin-left:260px;min-width:0;display:flex;flex-direction:column}
+.topbar{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:0 28px;height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:50;
+}
+.topbar-left{display:flex;align-items:center;gap:12px}
+.menu-toggle{
+  display:none;width:36px;height:36px;border-radius:8px;
+  background:var(--surface2);border:1px solid var(--border);
+  align-items:center;justify-content:center;cursor:pointer;
+  color:var(--text-muted);font-size:15px;
+}
+.page-title{font-size:18px;font-weight:700;color:var(--text)}
+.page-breadcrumb{font-size:12px;color:var(--text-muted);margin-top:1px}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.theme-toggle{
+  width:36px;height:36px;border-radius:8px;
+  background:var(--surface2);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--text-muted);font-size:15px;
+  transition:var(--transition);
+}
+.theme-toggle:hover{background:var(--primary-light);color:var(--primary);border-color:var(--primary)}
+.main-content{flex:1;padding:28px;overflow-y:auto}
+
+/* ===================================================
+   FORM ELEMENTS (APP)
+=================================================== */
+.field-group{margin-bottom:18px}
+.field-label{display:block;font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px}
+.field-input{
+  width:100%;padding:11px 14px;
+  background:var(--surface2);border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);color:var(--text);font-size:14px;
+  transition:var(--transition);
+}
+.field-input:focus{outline:none;border-color:var(--primary);background:var(--surface);box-shadow:0 0 0 3px rgba(26,111,196,.12)}
+.field-input::placeholder{color:var(--text-light)}
+select.field-input{cursor:pointer}
+textarea.field-input{resize:vertical;min-height:90px;line-height:1.6}
+
+/* ===================================================
+   PAGE SECTIONS
+=================================================== */
+.page{display:none;animation:fadeIn .3s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.section-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;flex-wrap:wrap;gap:10px;
+}
+.section-title{
+  font-size:17px;font-weight:700;color:var(--text);
+  display:flex;align-items:center;gap:8px;
+}
+.section-title i{color:var(--primary);font-size:15px}
+.section-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+/* STAT CARDS */
+.stats-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:16px;margin-bottom:24px;
+}
+.stat-card{
+  background:var(--surface);border-radius:var(--radius);
+  padding:20px;border:1px solid var(--border);
+  box-shadow:var(--shadow);
+  display:flex;align-items:flex-start;gap:14px;
+  transition:var(--transition);
+}
+.stat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.stat-icon{
+  width:46px;height:46px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.stat-icon.blue{background:var(--primary-light);color:var(--primary)}
+.stat-icon.green{background:var(--secondary-light);color:var(--secondary)}
+.stat-icon.yellow{background:var(--warning-light);color:var(--warning)}
+.stat-icon.red{background:var(--danger-light);color:var(--danger)}
+.stat-value{font-size:26px;font-weight:800;color:var(--text);line-height:1}
+.stat-label{font-size:12px;color:var(--text-muted);margin-top:4px}
+.stat-change{font-size:11px;margin-top:6px;font-weight:600}
+.stat-change.up{color:var(--success)}
+.stat-change.down{color:var(--danger)}
+
+/* CARDS */
+.card-header{
+  padding:18px 20px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.card-title{font-size:14px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
+.card-body{padding:20px}
+.card-footer{padding:14px 20px;border-top:1px solid var(--border);background:var(--surface2)}
+
+/* GRID LAYOUTS */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+.grid-auto{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;border-radius:var(--radius-sm)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+thead th{
+  background:var(--surface2);color:var(--text-muted);
+  font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;
+  padding:11px 14px;text-align:left;border-bottom:1px solid var(--border);
+  white-space:nowrap;
+}
+tbody tr{border-bottom:1px solid var(--border);transition:var(--transition)}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:var(--surface2)}
+tbody td{padding:12px 14px;vertical-align:middle}
+.table-actions{display:flex;gap:6px;align-items:center}
+
+/* DAY TABS */
+.day-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.day-tab{
+  padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;
+  cursor:pointer;transition:var(--transition);
+  background:var(--surface2);color:var(--text-muted);
+  border:1.5px solid var(--border);
+}
+.day-tab:hover{border-color:var(--primary);color:var(--primary)}
+.day-tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+/* SUMMARY TABS */
+.summary-tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:20px}
+.summary-tab{
+  padding:10px 20px;font-size:13px;font-weight:600;
+  cursor:pointer;color:var(--text-muted);transition:var(--transition);
+  border-bottom:2px solid transparent;margin-bottom:-1px;
+}
+.summary-tab:hover{color:var(--primary)}
+.summary-tab.active{color:var(--primary);border-bottom-color:var(--primary)}
+
+/* TOAST */
+#toast-container{
+  position:fixed;bottom:24px;right:24px;z-index:9999;
+  display:flex;flex-direction:column-reverse;gap:10px;
+}
+.toast{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:14px 18px;
+  box-shadow:var(--shadow-lg);
+  display:flex;align-items:center;gap:10px;
+  font-size:13.5px;font-weight:500;color:var(--text);
+  animation:toastIn .3s ease;min-width:280px;max-width:380px;
+}
+.toast.success{border-left:4px solid var(--success)}
+.toast.error{border-left:4px solid var(--danger)}
+.toast.info{border-left:4px solid var(--primary)}
+.toast.warning{border-left:4px solid var(--warning)}
+.toast i{font-size:16px}
+.toast.success i{color:var(--success)}
+.toast.error i{color:var(--danger)}
+.toast.info i{color:var(--primary)}
+.toast.warning i{color:var(--warning)}
+@keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* MODAL */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.5);
+  backdrop-filter:blur(4px);z-index:500;
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+.modal-overlay.open{display:flex;animation:fadeIn .2s ease}
+.modal{
+  background:var(--surface);border-radius:16px;
+  box-shadow:var(--shadow-lg);border:1px solid var(--border);
+  width:100%;max-width:520px;max-height:90vh;overflow-y:auto;
+  animation:slideUp .3s ease;
+}
+.modal-header{
+  padding:20px 24px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.modal-title{font-size:16px;font-weight:700;color:var(--text)}
+.modal-close{
+  width:30px;height:30px;border-radius:8px;
+  background:var(--surface2);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--text-muted);font-size:14px;
+  transition:var(--transition);
+}
+.modal-close:hover{background:var(--danger-light);color:var(--danger);border-color:var(--danger)}
+.modal-body{padding:24px}
+.modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end}
+
+/* LOADING */
+.spinner{
+  width:18px;height:18px;border:2px solid rgba(255,255,255,.3);
+  border-top-color:#fff;border-radius:50%;
+  animation:spin .7s linear infinite;display:inline-block;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.page-loader{
+  position:fixed;inset:0;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  z-index:9999;
+}
+.loader-content{text-align:center}
+.loader-logo{
+  width:70px;height:70px;background:linear-gradient(135deg,#1a6fc4,#0d9e6e);
+  border-radius:20px;display:flex;align-items:center;justify-content:center;
+  font-size:32px;color:#fff;margin:0 auto 16px;
+  animation:pulse .8s ease-in-out infinite alternate;
+}
+@keyframes pulse{from{box-shadow:0 0 0 0 rgba(26,111,196,.5)}to{box-shadow:0 0 0 16px rgba(26,111,196,0)}}
+.loader-text{font-size:16px;font-weight:600;color:var(--text);margin-bottom:6px}
+.loader-sub{font-size:13px;color:var(--text-muted)}
+
+/* RUBRICA */
+.rubrica-cell{
+  display:flex;align-items:center;gap:6px;
+}
+.rubrica-check{
+  width:22px;height:22px;border-radius:6px;border:2px solid var(--border);
+  cursor:pointer;transition:var(--transition);
+  display:flex;align-items:center;justify-content:center;font-size:11px;
+  flex-shrink:0;
+}
+.rubrica-check.signed{background:var(--secondary);border-color:var(--secondary);color:#fff}
+.rubrica-text{font-size:11px;color:var(--text-muted)}
+
+/* SEARCH BAR */
+.search-bar{
+  display:flex;align-items:center;gap:8px;
+  background:var(--surface2);border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);padding:8px 12px;
+  transition:var(--transition);
+}
+.search-bar:focus-within{border-color:var(--primary);box-shadow:0 0 0 3px rgba(26,111,196,.1)}
+.search-bar i{color:var(--text-light);font-size:14px}
+.search-bar input{
+  border:none;background:transparent;outline:none;
+  font-size:13.5px;color:var(--text);flex:1;
+  font-family:var(--font);
+}
+.search-bar input::placeholder{color:var(--text-light)}
+
+/* FILTER BAR */
+.filter-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+
+/* AUTO-SAVE indicator */
+.autosave-indicator{
+  display:flex;align-items:center;gap:6px;
+  font-size:11px;color:var(--text-light);
+}
+.autosave-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--text-light);transition:var(--transition);
+}
+.autosave-dot.saving{background:var(--warning);animation:spin .8s linear infinite}
+.autosave-dot.saved{background:var(--success)}
+
+/* EMPTY STATE */
+.empty-state{
+  text-align:center;padding:48px 24px;color:var(--text-muted);
+}
+.empty-state i{font-size:40px;opacity:.3;margin-bottom:12px;display:block}
+.empty-state p{font-size:14px}
+.empty-state .empty-action{margin-top:16px}
+
+/* CHART CONTAINER */
+.chart-container{position:relative;height:220px}
+
+/* WEEK INFO CARD */
+.week-info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.week-info-item{
+  background:var(--surface2);border-radius:var(--radius-sm);
+  padding:14px;border:1px solid var(--border);
+}
+.week-info-label{font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.week-info-value{font-size:14px;font-weight:600;color:var(--text)}
+
+/* SIDEBAR OVERLAY (mobile) */
+.sidebar-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.5);z-index:99;
+}
+
+/* ===================================================
+   RESPONSIVE
+=================================================== */
+@media(max-width:1024px){
+  .grid-2,.grid-3{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-overlay{display:block}
+  .sidebar-overlay.open{display:block}
+  .main-wrap{margin-left:0}
+  .menu-toggle{display:flex}
+  .main-content{padding:16px}
+  .topbar{padding:0 16px}
+  .auth-card{padding:32px 24px}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .modal{max-width:100%}
+}
+@media(max-width:480px){
+  .stats-grid{grid-template-columns:1fr}
+  .day-tabs .day-tab{padding:6px 10px;font-size:12px}
+}
+
+/* ===================================================
+   PRINT STYLES
+=================================================== */
+@media print{
+  .sidebar,.topbar,.btn,.section-actions,.filter-bar,#toast-container{display:none!important}
+  .main-wrap{margin-left:0!important}
+  .main-content{padding:0!important}
+  body{background:#fff!important;color:#000!important}
+  .card{box-shadow:none!important;border:1px solid #ddd!important}
+}
+
+/* ===================================================
+   EXTRA POLISH
+=================================================== */
+.tag{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600;
+  background:var(--surface2);color:var(--text-muted);border:1px solid var(--border);
+}
+.progress-bar{
+  background:var(--border);border-radius:999px;height:6px;overflow:hidden;
+}
+.progress-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--primary),var(--secondary));transition:width .4s ease}
+.divider{height:1px;background:var(--border);margin:20px 0}
+.info-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.info-row:last-child{border-bottom:none}
+.info-key{font-size:13px;color:var(--text-muted)}
+.info-val{font-size:13px;font-weight:600;color:var(--text)}
+</style>
+</head>
+<body>
+
+<!-- PAGE LOADER -->
+<div id="page-loader" class="page-loader">
+  <div class="loader-content">
+    <div class="loader-logo"><i class="fas fa-shield-alt"></i></div>
+    <div class="loader-text">DDS – Diálogo Digital de Segurança</div>
+    <div class="loader-sub">Carregando o sistema...</div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container"></div>
+
+<!-- SIDEBAR OVERLAY -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+<!-- ===================================================
+     AUTH PAGE
+=================================================== -->
+<div id="auth-page">
+  <div class="auth-blob auth-blob-1"></div>
+  <div class="auth-blob auth-blob-2"></div>
+
+  <!-- LOGIN FORM -->
+  <div class="auth-card" id="login-card">
+    <div class="auth-logo">
+      <div class="auth-logo-icon"><i class="fas fa-shield-alt"></i></div>
+      <div>
+        <div class="auth-logo-text">DDS</div>
+        <div class="auth-logo-sub">Sistema de Segurança</div>
+      </div>
+    </div>
+    <h2 class="auth-title">Bem-vindo de volta</h2>
+    <p class="auth-subtitle">Entre com suas credenciais para acessar o sistema</p>
+    <div id="login-error" class="auth-error hidden"><i class="fas fa-circle-exclamation"></i><span></span></div>
+    <form id="login-form" autocomplete="on">
+      <div class="form-group">
+        <label class="form-label" for="login-email">E-mail</label>
+        <div class="input-icon-wrap">
+          <i class="fas fa-envelope icon"></i>
+          <input class="form-input" type="email" id="login-email" placeholder="seu@email.com" required autocomplete="email"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="login-password">Senha</label>
+        <div class="input-icon-wrap">
+          <i class="fas fa-lock icon"></i>
+          <input class="form-input" type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password"/>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg w-full" id="login-btn">
+        <i class="fas fa-sign-in-alt"></i> Entrar no Sistema
+      </button>
+    </form>
+    <div class="auth-link">Não tem conta? <a onclick="showRegister()">Criar conta</a></div>
+    <div style="margin-top:20px;text-align:center">
+      <p style="color:rgba(255,255,255,.3);font-size:11px;margin-bottom:8px">ACESSO DEMO</p>
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+        <button class="btn" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1);font-size:11px;padding:6px 12px;border-radius:8px" onclick="fillDemo('admin')">
+          <i class="fas fa-user-shield"></i> Admin Demo
+        </button>
+        <button class="btn" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1);font-size:11px;padding:6px 12px;border-radius:8px" onclick="fillDemo('user')">
+          <i class="fas fa-user"></i> Usuário Demo
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REGISTER FORM -->
+  <div class="auth-card hidden" id="register-card">
+    <div class="auth-logo">
+      <div class="auth-logo-icon"><i class="fas fa-shield-alt"></i></div>
+      <div>
+        <div class="auth-logo-text">DDS</div>
+        <div class="auth-logo-sub">Sistema de Segurança</div>
+      </div>
+    </div>
+    <h2 class="auth-title">Criar nova conta</h2>
+    <p class="auth-subtitle">Preencha os dados para criar sua conta no sistema</p>
+    <div id="register-error" class="auth-error hidden"><i class="fas fa-circle-exclamation"></i><span></span></div>
+    <div id="register-success" class="auth-success hidden"><i class="fas fa-circle-check"></i><span></span></div>
+    <form id="register-form">
+      <div class="form-group">
+        <label class="form-label" for="reg-name">Nome completo</label>
+        <div class="input-icon-wrap">
+          <i class="fas fa-user icon"></i>
+          <input class="form-input" type="text" id="reg-name" placeholder="Seu nome completo" required/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="reg-email">E-mail</label>
+        <div class="input-icon-wrap">
+          <i class="fas fa-envelope icon"></i>
+          <input class="form-input" type="email" id="reg-email" placeholder="seu@email.com" required/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="reg-password">Senha</label>
+        <div class="input-icon-wrap">
+          <i class="fas fa-lock icon"></i>
+          <input class="form-input" type="password" id="reg-password" placeholder="••••••••" required minlength="6"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="reg-setor">Setor</label>
+        <div class="input-icon-wrap">
+          <i class="fas fa-building icon"></i>
+          <input class="form-input" type="text" id="reg-setor" placeholder="Departamento / Setor"/>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg w-full" id="register-btn">
+        <i class="fas fa-user-plus"></i> Criar Conta
+      </button>
+    </form>
+    <div class="auth-link">Já tem conta? <a onclick="showLogin()">Fazer login</a></div>
+  </div>
+</div>
+
+<!-- ===================================================
+     MAIN APP
+=================================================== -->
+<div id="app">
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo"><i class="fas fa-shield-alt"></i></div>
+        <div class="sidebar-logo-text">
+          <div class="sidebar-logo-title">DDS Sistema</div>
+          <div class="sidebar-logo-sub">Seg. do Trabalho</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Principal</div>
+          <div class="nav-item active" data-page="dashboard" onclick="navigateTo('dashboard')">
+            <i class="fas fa-gauge-high"></i> <span>Dashboard</span>
+          </div>
+          <div class="nav-item" data-page="dds" onclick="navigateTo('dds')">
+            <i class="fas fa-clipboard-list"></i> <span>Registro de DDS</span>
+          </div>
+          <div class="nav-item" data-page="colaboradores" onclick="navigateTo('colaboradores')">
+            <i class="fas fa-users"></i> <span>Colaboradores</span>
+          </div>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Análise</div>
+          <div class="nav-item" data-page="resumos" onclick="navigateTo('resumos')">
+            <i class="fas fa-file-lines"></i> <span>Resumos</span>
+          </div>
+          <div class="nav-item" data-page="relatorios" onclick="navigateTo('relatorios')">
+            <i class="fas fa-chart-bar"></i> <span>Relatórios</span>
+          </div>
+        </div>
+        <div class="nav-section nav-admin hidden" id="nav-admin">
+          <div class="nav-section-title">Administração</div>
+          <div class="nav-item" data-page="admin" onclick="navigateTo('admin')">
+            <i class="fas fa-sliders"></i> <span>Painel Admin</span>
+            <span class="nav-badge" id="nav-pending-count" style="display:none">0</span>
+          </div>
+          <div class="nav-item" data-page="usuarios" onclick="navigateTo('usuarios')">
+            <i class="fas fa-user-gear"></i> <span>Usuários</span>
+          </div>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar" id="sidebar-avatar">U</div>
+          <div>
+            <div class="user-name" id="sidebar-name">Carregando...</div>
+            <div class="user-role" id="sidebar-role">Usuário</div>
+          </div>
+          <div class="logout-btn" onclick="logout()" title="Sair">
+            <i class="fas fa-right-from-bracket"></i>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN WRAP -->
+    <div class="main-wrap">
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <div class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+          <div>
+            <div class="page-title" id="page-title">Dashboard</div>
+            <div class="page-breadcrumb" id="page-breadcrumb">DDS / Dashboard</div>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <div class="autosave-indicator" id="autosave-indicator">
+            <div class="autosave-dot saved" id="autosave-dot"></div>
+            <span id="autosave-text">Salvo</span>
+          </div>
+          <div class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
+            <i class="fas fa-circle-half-stroke"></i>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENT -->
+      <main class="main-content">
+
+        <!-- ===== DASHBOARD PAGE ===== -->
+        <div id="page-dashboard" class="page active">
+
+          <!-- Informações Semanais -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <span class="card-title"><i class="fas fa-calendar-week"></i> Informações da Semana</span>
+              <button class="btn btn-primary btn-sm" onclick="openWeekInfoModal()">
+                <i class="fas fa-pen"></i> Editar
+              </button>
+            </div>
+            <div class="card-body">
+              <div class="week-info-grid" id="week-info-display">
+                <div class="week-info-item">
+                  <div class="week-info-label">Responsável</div>
+                  <div class="week-info-value" id="wi-responsavel">—</div>
+                </div>
+                <div class="week-info-item">
+                  <div class="week-info-label">Turno</div>
+                  <div class="week-info-value" id="wi-turno">—</div>
+                </div>
+                <div class="week-info-item">
+                  <div class="week-info-label">Horário</div>
+                  <div class="week-info-value" id="wi-horario">—</div>
+                </div>
+                <div class="week-info-item">
+                  <div class="week-info-label">Data</div>
+                  <div class="week-info-value" id="wi-data">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="stats-grid" id="dash-stats">
+            <div class="stat-card">
+              <div class="stat-icon blue"><i class="fas fa-clipboard-check"></i></div>
+              <div>
+                <div class="stat-value" id="stat-total-dds">0</div>
+                <div class="stat-label">Total de DDS</div>
+                <div class="stat-change up"><i class="fas fa-arrow-trend-up"></i> Este mês</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon green"><i class="fas fa-users"></i></div>
+              <div>
+                <div class="stat-value" id="stat-total-colab">0</div>
+                <div class="stat-label">Colaboradores</div>
+                <div class="stat-change up"><i class="fas fa-arrow-trend-up"></i> Ativos</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon yellow"><i class="fas fa-pen-to-square"></i></div>
+              <div>
+                <div class="stat-value" id="stat-total-rubricas">0</div>
+                <div class="stat-label">Rubricas Coletadas</div>
+                <div class="stat-change up"><i class="fas fa-check-double"></i> Confirmadas</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon red"><i class="fas fa-calendar-day"></i></div>
+              <div>
+                <div class="stat-value" id="stat-semana">0</div>
+                <div class="stat-label">DDS Esta Semana</div>
+                <div class="stat-change"><i class="fas fa-calendar"></i> Semana atual</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart + Quick Summary -->
+          <div class="grid-2" style="margin-bottom:24px">
+            <div class="card">
+              <div class="card-header">
+                <span class="card-title"><i class="fas fa-chart-line"></i> DDS por Dia da Semana</span>
+              </div>
+              <div class="card-body">
+                <div class="chart-container"><canvas id="chart-dias"></canvas></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <span class="card-title"><i class="fas fa-chart-pie"></i> Colaboradores por Setor</span>
+              </div>
+              <div class="card-body">
+                <div class="chart-container"><canvas id="chart-setores"></canvas></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Day selector + Collaborator Table -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title"><i class="fas fa-users-line"></i> Colaboradores do DDS</span>
+              <div style="display:flex;gap:8px">
+                <button class="btn btn-secondary btn-sm" onclick="navigateTo('colaboradores')">
+                  <i class="fas fa-expand"></i> Ver todos
+                </button>
+                <button class="btn btn-primary btn-sm" onclick="openAddColabModal()">
+                  <i class="fas fa-plus"></i> Adicionar
+                </button>
+              </div>
+            </div>
+            <div class="card-body" style="padding-bottom:8px">
+              <div class="day-tabs" id="day-tabs">
+                <div class="day-tab active" data-day="todos" onclick="selectDay('todos')">Todos</div>
+                <div class="day-tab" data-day="Segunda-feira" onclick="selectDay('Segunda-feira')">Seg</div>
+                <div class="day-tab" data-day="Terça-feira" onclick="selectDay('Terça-feira')">Ter</div>
+                <div class="day-tab" data-day="Quarta-feira" onclick="selectDay('Quarta-feira')">Qua</div>
+                <div class="day-tab" data-day="Quinta-feira" onclick="selectDay('Quinta-feira')">Qui</div>
+                <div class="day-tab" data-day="Sexta-feira" onclick="selectDay('Sexta-feira')">Sex</div>
+                <div class="day-tab" data-day="Sábado" onclick="selectDay('Sábado')">Sáb</div>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table id="dash-colab-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Nome do Colaborador</th>
+                    <th>Setor</th>
+                    <th>Dia da Semana</th>
+                    <th>Rubrica</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="dash-colab-tbody"></tbody>
+              </table>
+            </div>
+            <div id="dash-colab-empty" class="empty-state hidden">
+              <i class="fas fa-user-slash"></i>
+              <p>Nenhum colaborador encontrado para este filtro.</p>
+              <div class="empty-action">
+                <button class="btn btn-primary btn-sm" onclick="openAddColabModal()">
+                  <i class="fas fa-plus"></i> Adicionar Colaborador
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== DDS REGISTRO PAGE ===== -->
+        <div id="page-dds" class="page">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fas fa-clipboard-list"></i> Registros de DDS</h2>
+            <div class="section-actions">
+              <button class="btn btn-primary btn-sm" onclick="openNewDDSModal()">
+                <i class="fas fa-plus"></i> Novo DDS
+              </button>
+            </div>
+          </div>
+
+          <div class="filter-bar">
+            <div class="search-bar" style="flex:1;min-width:220px">
+              <i class="fas fa-search"></i>
+              <input type="text" placeholder="Buscar DDS..." id="dds-search" oninput="filterDDSTable()"/>
+            </div>
+            <select class="field-input" style="width:auto;min-width:130px" id="dds-filter-turno" onchange="filterDDSTable()">
+              <option value="">Todos os turnos</option>
+              <option>Manhã</option><option>Tarde</option><option>Noite</option>
+            </select>
+          </div>
+
+          <div class="card">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Responsável</th>
+                    <th>Turno</th>
+                    <th>Horário</th>
+                    <th>Data</th>
+                    <th>Colaboradores</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="dds-tbody"></tbody>
+              </table>
+            </div>
+            <div id="dds-empty" class="empty-state hidden">
+              <i class="fas fa-clipboard"></i>
+              <p>Nenhum DDS registrado ainda.</p>
+              <div class="empty-action">
+                <button class="btn btn-primary btn-sm" onclick="openNewDDSModal()">
+                  <i class="fas fa-plus"></i> Registrar Primeiro DDS
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== COLABORADORES PAGE ===== -->
+        <div id="page-colaboradores" class="page">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fas fa-users"></i> Gerenciar Colaboradores</h2>
+            <div class="section-actions">
+              <button class="btn btn-secondary btn-sm" onclick="exportColabExcel()">
+                <i class="fas fa-file-excel"></i> Exportar Excel
+              </button>
+              <button class="btn btn-primary btn-sm" onclick="openAddColabModal()">
+                <i class="fas fa-plus"></i> Adicionar
+              </button>
+            </div>
+          </div>
+
+          <div class="filter-bar">
+            <div class="search-bar" style="flex:1;min-width:220px">
+              <i class="fas fa-search"></i>
+              <input type="text" placeholder="Buscar colaborador..." id="colab-search" oninput="filterColabTable()"/>
+            </div>
+            <select class="field-input" style="width:auto;min-width:160px" id="colab-filter-day" onchange="filterColabTable()">
+              <option value="">Todos os dias</option>
+              <option>Segunda-feira</option><option>Terça-feira</option>
+              <option>Quarta-feira</option><option>Quinta-feira</option>
+              <option>Sexta-feira</option><option>Sábado</option>
+            </select>
+            <select class="field-input" style="width:auto;min-width:140px" id="colab-filter-setor" onchange="filterColabTable()">
+              <option value="">Todos os setores</option>
+            </select>
+          </div>
+
+          <div class="card">
+            <div class="card-header" style="border-bottom:none">
+              <span class="card-title"><i class="fas fa-table"></i> Lista de Colaboradores</span>
+              <span class="badge badge-blue" id="colab-count-badge">0 colaboradores</span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Nome</th>
+                    <th>Setor</th>
+                    <th>Dia da Semana</th>
+                    <th>Rubrica</th>
+                    <th>Cadastrado em</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="colab-tbody"></tbody>
+              </table>
+            </div>
+            <div id="colab-empty" class="empty-state hidden">
+              <i class="fas fa-users"></i>
+              <p>Nenhum colaborador cadastrado.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== RESUMOS PAGE ===== -->
+        <div id="page-resumos" class="page">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fas fa-file-lines"></i> Resumos de Segurança</h2>
+            <div class="section-actions">
+              <div class="autosave-indicator">
+                <div class="autosave-dot saved" id="resumo-save-dot"></div>
+                <span id="resumo-save-text">Salvo automaticamente</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="summary-tabs">
+            <div class="summary-tab active" data-tab="dia" onclick="selectSummaryTab('dia')">
+              <i class="fas fa-calendar-day"></i> Resumo do Dia
+            </div>
+            <div class="summary-tab" data-tab="semana" onclick="selectSummaryTab('semana')">
+              <i class="fas fa-calendar-week"></i> Resumo da Semana
+            </div>
+            <div class="summary-tab" data-tab="mes" onclick="selectSummaryTab('mes')">
+              <i class="fas fa-calendar-alt"></i> Resumo do Mês
+            </div>
+          </div>
+
+          <!-- DIA -->
+          <div id="summary-panel-dia">
+            <div class="card">
+              <div class="card-header">
+                <span class="card-title"><i class="fas fa-sun"></i> Resumo do Dia</span>
+                <span class="text-sm text-muted" id="today-date"></span>
+              </div>
+              <div class="card-body">
+                <div class="field-group">
+                  <label class="field-label">Principais ocorrências do dia</label>
+                  <textarea class="field-input" id="resumo-dia" rows="5"
+                    placeholder="Descreva os principais pontos abordados no DDS hoje, ocorrências de segurança, alertas, etc..."
+                    oninput="autoSaveResumo()"></textarea>
+                </div>
+                <div class="grid-2">
+                  <div class="field-group">
+                    <label class="field-label">Riscos identificados</label>
+                    <textarea class="field-input" id="riscos-dia" rows="3"
+                      placeholder="Liste os riscos identificados..."
+                      oninput="autoSaveResumo()"></textarea>
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Ações corretivas</label>
+                    <textarea class="field-input" id="acoes-dia" rows="3"
+                      placeholder="Ações tomadas ou a serem tomadas..."
+                      oninput="autoSaveResumo()"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SEMANA -->
+          <div id="summary-panel-semana" class="hidden">
+            <div class="card">
+              <div class="card-header">
+                <span class="card-title"><i class="fas fa-calendar-week"></i> Resumo da Semana</span>
+              </div>
+              <div class="card-body">
+                <div class="field-group">
+                  <label class="field-label">Visão geral da semana</label>
+                  <textarea class="field-input" id="resumo-semana" rows="5"
+                    placeholder="Resuma os principais acontecimentos, treinamentos e ações de segurança da semana..."
+                    oninput="autoSaveResumo()"></textarea>
+                </div>
+                <div class="grid-2">
+                  <div class="field-group">
+                    <label class="field-label">Pontos positivos</label>
+                    <textarea class="field-input" id="positivos-semana" rows="3"
+                      placeholder="Boas práticas observadas..."
+                      oninput="autoSaveResumo()"></textarea>
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Pontos de melhoria</label>
+                    <textarea class="field-input" id="melhorias-semana" rows="3"
+                      placeholder="O que pode ser melhorado..."
+                      oninput="autoSaveResumo()"></textarea>
+                  </div>
+                </div>
+                <div class="field-group">
+                  <label class="field-label">Meta para próxima semana</label>
+                  <textarea class="field-input" id="meta-semana" rows="3"
+                    placeholder="Defina as metas e objetivos para a próxima semana..."
+                    oninput="autoSaveResumo()"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MES -->
+          <div id="summary-panel-mes" class="hidden">
+            <div class="card">
+              <div class="card-header">
+                <span class="card-title"><i class="fas fa-calendar-alt"></i> Resumo do Mês</span>
+              </div>
+              <div class="card-body">
+                <div class="field-group">
+                  <label class="field-label">Balanço mensal de segurança</label>
+                  <textarea class="field-input" id="resumo-mes" rows="5"
+                    placeholder="Descreva o desempenho geral de segurança do mês, indicadores, eventos marcantes..."
+                    oninput="autoSaveResumo()"></textarea>
+                </div>
+                <div class="grid-3">
+                  <div class="field-group">
+                    <label class="field-label">Total de DDS realizados</label>
+                    <input class="field-input" type="number" id="total-dds-mes" placeholder="0" oninput="autoSaveResumo()"/>
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Acidentes registrados</label>
+                    <input class="field-input" type="number" id="acidentes-mes" placeholder="0" oninput="autoSaveResumo()"/>
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Quase-acidentes</label>
+                    <input class="field-input" type="number" id="quase-acidentes-mes" placeholder="0" oninput="autoSaveResumo()"/>
+                  </div>
+                </div>
+                <div class="field-group">
+                  <label class="field-label">Objetivos do próximo mês</label>
+                  <textarea class="field-input" id="objetivos-mes" rows="3"
+                    placeholder="Planejamento e metas para o próximo mês..."
+                    oninput="autoSaveResumo()"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== RELATÓRIOS PAGE ===== -->
+        <div id="page-relatorios" class="page">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fas fa-chart-bar"></i> Relatórios</h2>
+            <div class="section-actions">
+              <button class="btn btn-secondary btn-sm" onclick="exportRelPDF()">
+                <i class="fas fa-file-pdf"></i> Exportar PDF
+              </button>
+              <button class="btn btn-success btn-sm" onclick="exportRelExcel()">
+                <i class="fas fa-file-excel"></i> Exportar Excel
+              </button>
+            </div>
+          </div>
+
+          <!-- Filters -->
+          <div class="card mb-4">
+            <div class="card-body" style="padding:16px">
+              <div class="filter-bar" style="margin-bottom:0">
+                <div class="search-bar" style="flex:1;min-width:200px">
+                  <i class="fas fa-search"></i>
+                  <input type="text" placeholder="Buscar em relatórios..." id="rel-search" oninput="filterRelTable()"/>
+                </div>
+                <input class="field-input" type="date" id="rel-date-from" onchange="filterRelTable()" style="width:auto" title="De"/>
+                <input class="field-input" type="date" id="rel-date-to" onchange="filterRelTable()" style="width:auto" title="Até"/>
+                <button class="btn btn-outline btn-sm" onclick="clearRelFilters()">
+                  <i class="fas fa-times"></i> Limpar
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Summary Stats -->
+          <div class="stats-grid" style="margin-bottom:24px">
+            <div class="stat-card">
+              <div class="stat-icon blue"><i class="fas fa-clipboard-list"></i></div>
+              <div>
+                <div class="stat-value" id="rel-stat-dds">0</div>
+                <div class="stat-label">DDS no Período</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon green"><i class="fas fa-user-check"></i></div>
+              <div>
+                <div class="stat-value" id="rel-stat-colab">0</div>
+                <div class="stat-label">Participantes</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon yellow"><i class="fas fa-pen"></i></div>
+              <div>
+                <div class="stat-value" id="rel-stat-rubricas">0</div>
+                <div class="stat-label">Rubricas Coletadas</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <span class="card-title"><i class="fas fa-chart-bar"></i> DDS Realizados por Mês</span>
+            </div>
+            <div class="card-body">
+              <div class="chart-container" style="height:240px"><canvas id="chart-mensal"></canvas></div>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title"><i class="fas fa-list"></i> Todos os Registros</span>
+              <span class="badge badge-blue" id="rel-count-badge">0 registros</span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Data</th>
+                    <th>Responsável</th>
+                    <th>Turno</th>
+                    <th>Horário</th>
+                    <th>Colaboradores</th>
+                    <th>Rubricas</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="rel-tbody"></tbody>
+              </table>
+            </div>
+            <div id="rel-empty" class="empty-state hidden">
+              <i class="fas fa-chart-bar"></i>
+              <p>Nenhum registro encontrado.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== ADMIN PAGE ===== -->
+        <div id="page-admin" class="page">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fas fa-sliders"></i> Painel Administrativo</h2>
+            <div class="section-actions">
+              <button class="btn btn-success btn-sm" onclick="exportFullDB()">
+                <i class="fas fa-database"></i> Exportar Banco Completo
+              </button>
+            </div>
+          </div>
+
+          <div class="stats-grid" style="margin-bottom:24px">
+            <div class="stat-card">
+              <div class="stat-icon blue"><i class="fas fa-users"></i></div>
+              <div>
+                <div class="stat-value" id="admin-total-users">0</div>
+                <div class="stat-label">Total de Usuários</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon yellow"><i class="fas fa-user-clock"></i></div>
+              <div>
+                <div class="stat-value" id="admin-pending-users">0</div>
+                <div class="stat-label">Usuários Pendentes</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon green"><i class="fas fa-clipboard-check"></i></div>
+              <div>
+                <div class="stat-value" id="admin-total-dds">0</div>
+                <div class="stat-label">Total de DDS</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon red"><i class="fas fa-person-digging"></i></div>
+              <div>
+                <div class="stat-value" id="admin-total-colab">0</div>
+                <div class="stat-label">Total de Colaboradores</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-bottom:24px">
+            <div class="card">
+              <div class="card-header">
+                <span class="card-title"><i class="fas fa-chart-line"></i> Atividade do Sistema</span>
+              </div>
+              <div class="card-body">
+                <div class="chart-container"><canvas id="chart-atividade"></canvas></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <span class="card-title"><i class="fas fa-circle-info"></i> Informações do Sistema</span>
+              </div>
+              <div class="card-body" style="padding:0">
+                <div style="padding:0 16px">
+                  <div class="info-row">
+                    <span class="info-key">Versão do Sistema</span>
+                    <span class="info-val">DDS v2.0.0</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-key">Armazenamento</span>
+                    <span class="info-val" id="storage-info">—</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-key">Último acesso</span>
+                    <span class="info-val" id="last-access">—</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-key">Usuário ativo</span>
+                    <span class="info-val" id="admin-active-user">—</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent DDS -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title"><i class="fas fa-clock-rotate-left"></i> Últimos Registros de DDS</span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Responsável</th>
+                    <th>Turno</th>
+                    <th>Colaboradores</th>
+                    <th>Rubricas</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-recent-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== USUÁRIOS PAGE ===== -->
+        <div id="page-usuarios" class="page">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fas fa-user-gear"></i> Gerenciar Usuários</h2>
+          </div>
+
+          <div class="filter-bar">
+            <div class="search-bar" style="flex:1;min-width:220px">
+              <i class="fas fa-search"></i>
+              <input type="text" placeholder="Buscar usuário..." id="user-search" oninput="filterUserTable()"/>
+            </div>
+            <select class="field-input" style="width:auto;min-width:130px" id="user-filter-status" onchange="filterUserTable()">
+              <option value="">Todos</option>
+              <option value="ativo">Ativos</option>
+              <option value="pendente">Pendentes</option>
+              <option value="inativo">Inativos</option>
+            </select>
+          </div>
+
+          <div class="card">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Setor</th>
+                    <th>Perfil</th>
+                    <th>Status</th>
+                    <th>Cadastro</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="users-tbody"></tbody>
+              </table>
+            </div>
+            <div id="users-empty" class="empty-state hidden">
+              <i class="fas fa-users"></i>
+              <p>Nenhum usuário encontrado.</p>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+</div>
+
+<!-- ===================================================
+     MODALS
+=================================================== -->
+
+<!-- Week Info Modal -->
+<div class="modal-overlay" id="modal-weekinfo">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title"><i class="fas fa-calendar-week" style="color:var(--primary)"></i> Informações Semanais</h3>
+      <div class="modal-close" onclick="closeModal('modal-weekinfo')"><i class="fas fa-times"></i></div>
+    </div>
+    <div class="modal-body">
+      <div class="field-group">
+        <label class="field-label">Responsável</label>
+        <input class="field-input" type="text" id="wi-resp-input" placeholder="Nome do responsável pelo DDS"/>
+      </div>
+      <div class="grid-2">
+        <div class="field-group">
+          <label class="field-label">Turno</label>
+          <select class="field-input" id="wi-turno-input">
+            <option value="">Selecione o turno</option>
+            <option>Manhã</option><option>Tarde</option><option>Noite</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Horário</label>
+          <input class="field-input" type="time" id="wi-horario-input"/>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Data</label>
+        <input class="field-input" type="date" id="wi-data-input"/>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-weekinfo')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveWeekInfo()"><i class="fas fa-save"></i> Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Collaborator Modal -->
+<div class="modal-overlay" id="modal-colab">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="colab-modal-title"><i class="fas fa-user-plus" style="color:var(--primary)"></i> Adicionar Colaborador</h3>
+      <div class="modal-close" onclick="closeModal('modal-colab')"><i class="fas fa-times"></i></div>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="colab-edit-id"/>
+      <div class="field-group">
+        <label class="field-label">Nome do Colaborador *</label>
+        <input class="field-input" type="text" id="colab-nome" placeholder="Nome completo"/>
+      </div>
+      <div class="grid-2">
+        <div class="field-group">
+          <label class="field-label">Setor *</label>
+          <input class="field-input" type="text" id="colab-setor" placeholder="Departamento / Setor"/>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Dia da Semana *</label>
+          <select class="field-input" id="colab-dia">
+            <option value="">Selecione o dia</option>
+            <option>Segunda-feira</option><option>Terça-feira</option>
+            <option>Quarta-feira</option><option>Quinta-feira</option>
+            <option>Sexta-feira</option><option>Sábado</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-colab')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveColab()"><i class="fas fa-save"></i> Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- New DDS Modal -->
+<div class="modal-overlay" id="modal-dds">
+  <div class="modal" style="max-width:600px">
+    <div class="modal-header">
+      <h3 class="modal-title"><i class="fas fa-plus-circle" style="color:var(--primary)"></i> Novo Registro de DDS</h3>
+      <div class="modal-close" onclick="closeModal('modal-dds')"><i class="fas fa-times"></i></div>
+    </div>
+    <div class="modal-body">
+      <div class="field-group">
+        <label class="field-label">Responsável *</label>
+        <input class="field-input" type="text" id="dds-resp" placeholder="Nome do responsável"/>
+      </div>
+      <div class="grid-3">
+        <div class="field-group">
+          <label class="field-label">Turno *</label>
+          <select class="field-input" id="dds-turno">
+            <option value="">Turno</option>
+            <option>Manhã</option><option>Tarde</option><option>Noite</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Horário *</label>
+          <input class="field-input" type="time" id="dds-horario"/>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Data *</label>
+          <input class="field-input" type="date" id="dds-data"/>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Tema / Assunto do DDS</label>
+        <input class="field-input" type="text" id="dds-tema" placeholder="Ex: Uso correto de EPI"/>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Observações</label>
+        <textarea class="field-input" id="dds-obs" rows="3" placeholder="Observações adicionais..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-dds')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveDDS()"><i class="fas fa-save"></i> Registrar DDS</button>
+    </div>
+  </div>
+</div>
+
+<!-- DDS Detail Modal -->
+<div class="modal-overlay" id="modal-dds-detail">
+  <div class="modal" style="max-width:700px">
+    <div class="modal-header">
+      <h3 class="modal-title"><i class="fas fa-eye" style="color:var(--primary)"></i> Detalhes do DDS</h3>
+      <div class="modal-close" onclick="closeModal('modal-dds-detail')"><i class="fas fa-times"></i></div>
+    </div>
+    <div class="modal-body" id="dds-detail-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-dds-detail')">Fechar</button>
+      <button class="btn btn-primary" onclick="printDDSDetail()"><i class="fas fa-print"></i> Imprimir</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Delete Modal -->
+<div class="modal-overlay" id="modal-confirm">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-header">
+      <h3 class="modal-title"><i class="fas fa-triangle-exclamation" style="color:var(--danger)"></i> Confirmar Exclusão</h3>
+      <div class="modal-close" onclick="closeModal('modal-confirm')"><i class="fas fa-times"></i></div>
+    </div>
+    <div class="modal-body">
+      <p id="confirm-msg" style="color:var(--text-muted);font-size:14px">Tem certeza que deseja excluir este item? Esta ação não pode ser desfeita.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-confirm')">Cancelar</button>
+      <button class="btn btn-danger" id="confirm-ok-btn"><i class="fas fa-trash"></i> Excluir</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================================================
+     JAVASCRIPT APPLICATION
+=================================================== -->
+<script>
+/* =====================================================
+   DDS SYSTEM - MAIN APPLICATION
+   Full-stack simulation with localStorage persistence
+===================================================== */
+
+// ─────────────────────────────────────────────
+// DATA STORE (simulates database)
+// ─────────────────────────────────────────────
+const DB = {
+  get(key) {
+    try { return JSON.parse(localStorage.getItem('dds_' + key)) || null; } catch { return null; }
+  },
+  set(key, val) {
+    try { localStorage.setItem('dds_' + key, JSON.stringify(val)); } catch { console.warn('Storage full'); }
+  },
+  getArr(key) { return this.get(key) || []; },
+  push(key, val) {
+    const arr = this.getArr(key);
+    arr.push(val);
+    this.set(key, arr);
+    return val;
+  },
+  update(key, id, patch) {
+    const arr = this.getArr(key);
+    const idx = arr.findIndex(x => x.id === id);
+    if (idx >= 0) { arr[idx] = {...arr[idx], ...patch}; this.set(key, arr); return arr[idx]; }
+    return null;
+  },
+  remove(key, id) {
+    const arr = this.getArr(key).filter(x => x.id !== id);
+    this.set(key, arr);
+  }
+};
+
+// ─────────────────────────────────────────────
+// UTILS
+// ─────────────────────────────────────────────
+let idCounter = Date.now();
+const uid = () => (++idCounter).toString(36) + Math.random().toString(36).slice(2,6);
+const today = () => new Date().toISOString().slice(0,10);
+const fmtDate = d => { if(!d) return '—'; const p=d.split('-'); return `${p[2]}/${p[1]}/${p[0]}`; };
+const fmtDateTime = () => new Date().toLocaleString('pt-BR');
+const initials = name => name ? name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase() : 'U';
+
+// ─────────────────────────────────────────────
+// AUTH
+// ─────────────────────────────────────────────
+let currentUser = null;
+
+function initDefaultUsers() {
+  let users = DB.getArr('users');
+  if (!users.find(u => u.email === 'admin@dds.com')) {
+    DB.push('users', {
+      id: 'admin_1', name: 'Administrador DDS', email: 'admin@dds.com',
+      password: 'admin123', role: 'admin', status: 'ativo',
+      setor: 'Segurança do Trabalho', createdAt: today()
+    });
+  }
+  if (!users.find(u => u.email === 'usuario@dds.com')) {
+    DB.push('users', {
+      id: 'user_1', name: 'João Silva', email: 'usuario@dds.com',
+      password: 'user123', role: 'usuario', status: 'ativo',
+      setor: 'Produção', createdAt: today()
+    });
+  }
+  // Demo DDS data
+  if (DB.getArr('dds_records').length === 0) {
+    const days = ['Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira'];
+    const setores = ['Produção','Manutenção','Logística','Qualidade','Administrativo'];
+    const nomes = ['Carlos Mendes','Ana Paula','Roberto Souza','Fernanda Lima','Marcos Oliveira',
+      'Juliana Costa','Paulo Santos','Camila Rocha','Diego Ferreira','Larissa Gomes'];
+    // Add some collaborators
+    nomes.forEach((n,i) => {
+      DB.push('colaboradores', {
+        id: uid(), nome: n, setor: setores[i % setores.length],
+        dia: days[i % days.length], rubrica: i % 3 === 0, createdAt: today()
+      });
+    });
+    // Add some DDS records
+    const dates = ['2025-01-15','2025-02-10','2025-03-05','2025-03-20','2025-04-01','2025-04-15'];
+    const temas = ['Uso correto de EPI','Prevenção de quedas','Manuseio de produtos químicos',
+      'Ergonomia no trabalho','Primeiros socorros','Combate a incêndio'];
+    dates.forEach((d,i) => {
+      DB.push('dds_records', {
+        id: uid(), responsavel: 'Carlos Mendes', turno: ['Manhã','Tarde','Noite'][i%3],
+        horario: '08:00', data: d, tema: temas[i], obs: '', createdAt: d
+      });
+    });
+  }
+}
+
+function login(email, pass) {
+  const users = DB.getArr('users');
+  const u = users.find(u => u.email === email && u.password === pass);
+  if (!u) return { ok: false, msg: 'E-mail ou senha incorretos.' };
+  if (u.status === 'inativo') return { ok: false, msg: 'Sua conta está desativada. Contate o administrador.' };
+  if (u.status === 'pendente') return { ok: false, msg: 'Sua conta está aguardando aprovação do administrador.' };
+  DB.set('session', { userId: u.id, loginAt: Date.now() });
+  currentUser = u;
+  return { ok: true };
+}
+
+function register(name, email, pass, setor) {
+  const users = DB.getArr('users');
+  if (users.find(u => u.email === email)) return { ok: false, msg: 'E-mail já cadastrado no sistema.' };
+  if (pass.length < 6) return { ok: false, msg: 'A senha deve ter pelo menos 6 caracteres.' };
+  DB.push('users', {
+    id: uid(), name, email, password: pass,
+    role: 'usuario', status: 'pendente', setor: setor || '—', createdAt: today()
+  });
+  return { ok: true };
+}
+
+function checkSession() {
+  const sess = DB.get('session');
+  if (!sess) return false;
+  const users = DB.getArr('users');
+  const u = users.find(u => u.id === sess.userId);
+  if (!u || u.status !== 'ativo') return false;
+  currentUser = u;
+  return true;
+}
+
+function logout() {
+  DB.set('session', null);
+  currentUser = null;
+  showAuthPage();
+}
+
+// ─────────────────────────────────────────────
+// UI NAVIGATION
+// ─────────────────────────────────────────────
+const PAGE_TITLES = {
+  dashboard: ['Dashboard', 'DDS / Dashboard'],
+  dds: ['Registro de DDS', 'DDS / Registros'],
+  colaboradores: ['Colaboradores', 'DDS / Colaboradores'],
+  resumos: ['Resumos', 'DDS / Resumos'],
+  relatorios: ['Relatórios', 'DDS / Relatórios'],
+  admin: ['Painel Admin', 'DDS / Administração'],
+  usuarios: ['Usuários', 'DDS / Usuários'],
+};
+
+let currentPage = 'dashboard';
+let chartDias, chartSetores, chartMensal, chartAtividade;
+
+function navigateTo(page) {
+  if (page === 'admin' || page === 'usuarios') {
+    if (!currentUser || currentUser.role !== 'admin') {
+      showToast('Acesso negado: apenas administradores.', 'error');
+      return;
+    }
+  }
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const pg = document.getElementById('page-' + page);
+  if (pg) pg.classList.add('active');
+  const nav = document.querySelector(`.nav-item[data-page="${page}"]`);
+  if (nav) nav.classList.add('active');
+  const [title, bc] = PAGE_TITLES[page] || [page, 'DDS'];
+  document.getElementById('page-title').textContent = title;
+  document.getElementById('page-breadcrumb').textContent = bc;
+  currentPage = page;
+  // Close sidebar on mobile
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebar-overlay').classList.remove('open');
+  }
+  // Refresh page data
+  refreshPage(page);
+}
+
+function refreshPage(page) {
+  switch(page) {
+    case 'dashboard': refreshDashboard(); break;
+    case 'dds': refreshDDSTable(); break;
+    case 'colaboradores': refreshColabTable(); break;
+    case 'resumos': loadResumos(); break;
+    case 'relatorios': refreshRelatorios(); break;
+    case 'admin': refreshAdmin(); break;
+    case 'usuarios': refreshUsers(); break;
+  }
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('open');
+}
+
+function showAuthPage() {
+  document.getElementById('auth-page').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+}
+
+function showApp() {
+  document.getElementById('auth-page').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  // Set user info
+  document.getElementById('sidebar-name').textContent = currentUser.name;
+  document.getElementById('sidebar-role').textContent = currentUser.role === 'admin' ? 'Administrador' : 'Usuário';
+  document.getElementById('sidebar-avatar').textContent = initials(currentUser.name);
+  // Show/hide admin nav
+  if (currentUser.role === 'admin') {
+    document.getElementById('nav-admin').classList.remove('hidden');
+  }
+  refreshPage('dashboard');
+  updatePendingBadge();
+}
+
+function showRegister() {
+  document.getElementById('login-card').classList.add('hidden');
+  document.getElementById('register-card').classList.remove('hidden');
+}
+
+function showLogin() {
+  document.getElementById('register-card').classList.add('hidden');
+  document.getElementById('login-card').classList.remove('hidden');
+}
+
+function fillDemo(type) {
+  if (type === 'admin') {
+    document.getElementById('login-email').value = 'admin@dds.com';
+    document.getElementById('login-password').value = 'admin123';
+  } else {
+    document.getElementById('login-email').value = 'usuario@dds.com';
+    document.getElementById('login-password').value = 'user123';
+  }
+}
+
+// ─────────────────────────────────────────────
+// THEME
+// ─────────────────────────────────────────────
+function initTheme() {
+  const saved = localStorage.getItem('dds_theme') || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+}
+
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('dds_theme', next);
+  // Refresh charts
+  setTimeout(() => { if(currentPage) refreshPage(currentPage); }, 100);
+}
+
+// ─────────────────────────────────────────────
+// TOAST NOTIFICATIONS
+// ─────────────────────────────────────────────
+function showToast(msg, type = 'info', duration = 4000) {
+  const icons = { success:'fas fa-circle-check', error:'fas fa-circle-xmark', info:'fas fa-circle-info', warning:'fas fa-triangle-exclamation' };
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.innerHTML = `<i class="${icons[type]||icons.info}"></i><span>${msg}</span>`;
+  document.getElementById('toast-container').appendChild(t);
+  setTimeout(() => {
+    t.style.animation = 'toastOut .3s ease forwards';
+    setTimeout(() => t.remove(), 300);
+  }, duration);
+}
+
+// ─────────────────────────────────────────────
+// MODALS
+// ─────────────────────────────────────────────
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// ─────────────────────────────────────────────
+// AUTOSAVE INDICATOR
+// ─────────────────────────────────────────────
+let saveTimeout = null;
+function triggerAutosave(cb) {
+  const dot = document.getElementById('autosave-dot');
+  const txt = document.getElementById('autosave-text');
+  dot.className = 'autosave-dot saving';
+  txt.textContent = 'Salvando...';
+  clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(() => {
+    if (cb) cb();
+    dot.className = 'autosave-dot saved';
+    txt.textContent = 'Salvo';
+  }, 800);
+}
+
+// ─────────────────────────────────────────────
+// DASHBOARD
+// ─────────────────────────────────────────────
+let selectedDay = 'todos';
+
+function selectDay(day) {
+  selectedDay = day;
+  document.querySelectorAll('.day-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.day === day);
+  });
+  renderDashColabTable();
+}
+
+function refreshDashboard() {
+  const colabs = DB.getArr('colaboradores');
+  const ddsRecs = DB.getArr('dds_records');
+  const rubricas = colabs.filter(c => c.rubrica).length;
+  const thisWeek = ddsRecs.filter(d => {
+    const now = new Date(); const dd = new Date(d.data);
+    const diff = (now - dd) / (1000*60*60*24);
+    return diff <= 7;
+  }).length;
+
+  document.getElementById('stat-total-dds').textContent = ddsRecs.length;
+  document.getElementById('stat-total-colab').textContent = colabs.length;
+  document.getElementById('stat-total-rubricas').textContent = rubricas;
+  document.getElementById('stat-semana').textContent = thisWeek;
+
+  renderWeekInfo();
+  renderDashColabTable();
+  renderChartDias();
+  renderChartSetores();
+}
+
+function renderWeekInfo() {
+  const wi = DB.get('week_info') || {};
+  document.getElementById('wi-responsavel').textContent = wi.responsavel || '—';
+  document.getElementById('wi-turno').textContent = wi.turno || '—';
+  document.getElementById('wi-horario').textContent = wi.horario || '—';
+  document.getElementById('wi-data').textContent = wi.data ? fmtDate(wi.data) : '—';
+}
+
+function openWeekInfoModal() {
+  const wi = DB.get('week_info') || {};
+  document.getElementById('wi-resp-input').value = wi.responsavel || '';
+  document.getElementById('wi-turno-input').value = wi.turno || '';
+  document.getElementById('wi-horario-input').value = wi.horario || '';
+  document.getElementById('wi-data-input').value = wi.data || today();
+  openModal('modal-weekinfo');
+}
+
+function saveWeekInfo() {
+  const wi = {
+    responsavel: document.getElementById('wi-resp-input').value.trim(),
+    turno: document.getElementById('wi-turno-input').value,
+    horario: document.getElementById('wi-horario-input').value,
+    data: document.getElementById('wi-data-input').value
+  };
+  DB.set('week_info', wi);
+  renderWeekInfo();
+  closeModal('modal-weekinfo');
+  showToast('Informações semanais salvas com sucesso!', 'success');
+}
+
+function renderDashColabTable() {
+  const colabs = DB.getArr('colaboradores');
+  const filtered = selectedDay === 'todos' ? colabs : colabs.filter(c => c.dia === selectedDay);
+  const tbody = document.getElementById('dash-colab-tbody');
+  const empty = document.getElementById('dash-colab-empty');
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+  tbody.innerHTML = filtered.map((c,i) => `
+    <tr>
+      <td><span class="text-muted text-sm">${i+1}</span></td>
+      <td><strong>${c.nome}</strong></td>
+      <td><span class="tag">${c.setor}</span></td>
+      <td><span class="badge badge-blue">${c.dia}</span></td>
+      <td>
+        <div class="rubrica-cell">
+          <div class="rubrica-check ${c.rubrica?'signed':''}" onclick="toggleRubrica('${c.id}')" title="${c.rubrica?'Rubrica coletada – clique para remover':'Coletar rubrica'}">
+            ${c.rubrica?'<i class="fas fa-check"></i>':''}
+          </div>
+          <span class="rubrica-text">${c.rubrica?'Confirmado':'Pendente'}</span>
+        </div>
+      </td>
+      <td>
+        <div class="table-actions">
+          <button class="btn btn-secondary btn-sm btn-icon" onclick="editColab('${c.id}')" title="Editar"><i class="fas fa-pen"></i></button>
+          <button class="btn btn-danger btn-sm btn-icon" onclick="confirmDelete('colab','${c.id}','Excluir colaborador ${c.nome}?')" title="Excluir"><i class="fas fa-trash"></i></button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function toggleRubrica(id) {
+  const colabs = DB.getArr('colaboradores');
+  const c = colabs.find(x => x.id === id);
+  if (c) {
+    c.rubrica = !c.rubrica;
+    DB.set('colaboradores', colabs);
+    renderDashColabTable();
+    refreshDashboard();
+    triggerAutosave();
+    showToast(c.rubrica ? 'Rubrica coletada!' : 'Rubrica removida.', c.rubrica ? 'success' : 'info');
+  }
+}
+
+// ─────────────────────────────────────────────
+// CHARTS
+// ─────────────────────────────────────────────
+const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark';
+const chartColors = ['#1a6fc4','#0d9e6e','#f59e0b','#ef4444','#8b5cf6','#06b6d4'];
+
+function chartDefaults() {
+  return {
+    color: isDark() ? '#94a3b8' : '#64748b',
+    grid: isDark() ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)',
+  };
+}
+
+function renderChartDias() {
+  const colabs = DB.getArr('colaboradores');
+  const dias = ['Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+  const labels = ['Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const data = dias.map(d => colabs.filter(c => c.dia === d).length);
+  const cd = chartDefaults();
+  const ctx = document.getElementById('chart-dias');
+  if (!ctx) return;
+  if (chartDias) chartDias.destroy();
+  chartDias = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Colaboradores',
+        data,
+        backgroundColor: chartColors[0] + 'cc',
+        borderColor: chartColors[0],
+        borderWidth: 2, borderRadius: 6,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: cd.grid }, ticks: { color: cd.color } },
+        y: { grid: { color: cd.grid }, ticks: { color: cd.color, stepSize: 1 } }
+      }
+    }
+  });
+}
+
+function renderChartSetores() {
+  const colabs = DB.getArr('colaboradores');
+  const setMap = {};
+  colabs.forEach(c => { setMap[c.setor] = (setMap[c.setor]||0) + 1; });
+  const keys = Object.keys(setMap);
+  const ctx = document.getElementById('chart-setores');
+  if (!ctx) return;
+  if (chartSetores) chartSetores.destroy();
+  if (keys.length === 0) return;
+  chartSetores = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: keys,
+      datasets: [{ data: keys.map(k=>setMap[k]), backgroundColor: chartColors, borderWidth: 0 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'right',
+          labels: { color: chartDefaults().color, font: { size: 11 }, padding: 12 }
+        }
+      },
+      cutout: '65%'
+    }
+  });
+}
+
+function renderChartMensal() {
+  const ddsRecs = DB.getArr('dds_records');
+  const months = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  const counts = new Array(12).fill(0);
+  ddsRecs.forEach(d => {
+    const m = new Date(d.data).getMonth();
+    if (!isNaN(m)) counts[m]++;
+  });
+  const ctx = document.getElementById('chart-mensal');
+  if (!ctx) return;
+  if (chartMensal) chartMensal.destroy();
+  const cd = chartDefaults();
+  chartMensal = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [{
+        label: 'DDS Realizados',
+        data: counts,
+        borderColor: chartColors[0], backgroundColor: chartColors[0]+'22',
+        tension: 0.4, fill: true, pointRadius: 4, pointHoverRadius: 6,
+        pointBackgroundColor: chartColors[0],
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: cd.color } } },
+      scales: {
+        x: { grid: { color: cd.grid }, ticks: { color: cd.color } },
+        y: { grid: { color: cd.grid }, ticks: { color: cd.color, stepSize: 1 } }
+      }
+    }
+  });
+}
+
+function renderChartAtividade() {
+  const ctx = document.getElementById('chart-atividade');
+  if (!ctx) return;
+  if (chartAtividade) chartAtividade.destroy();
+  const months = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  const ddsRecs = DB.getArr('dds_records');
+  const colabs = DB.getArr('colaboradores');
+  const ddsCounts = new Array(12).fill(0);
+  const colabCounts = new Array(12).fill(0);
+  ddsRecs.forEach(d => { const m = new Date(d.data).getMonth(); if(!isNaN(m)) ddsCounts[m]++; });
+  colabs.forEach(c => { const m = new Date(c.createdAt).getMonth(); if(!isNaN(m)) colabCounts[m]++; });
+  const cd = chartDefaults();
+  chartAtividade = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: months,
+      datasets: [
+        { label: 'DDS', data: ddsCounts, backgroundColor: chartColors[0]+'cc', borderRadius: 4 },
+        { label: 'Colaboradores', data: colabCounts, backgroundColor: chartColors[1]+'cc', borderRadius: 4 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: cd.color, font:{ size:11 } } } },
+      scales: {
+        x: { stacked: true, grid: { color: cd.grid }, ticks: { color: cd.color } },
+        y: { stacked: true, grid: { color: cd.grid }, ticks: { color: cd.color } }
+      }
+    }
+  });
+}
+
+// ─────────────────────────────────────────────
+// COLLABORATORS
+// ─────────────────────────────────────────────
+function openAddColabModal() {
+  document.getElementById('colab-edit-id').value = '';
+  document.getElementById('colab-modal-title').innerHTML = '<i class="fas fa-user-plus" style="color:var(--primary)"></i> Adicionar Colaborador';
+  document.getElementById('colab-nome').value = '';
+  document.getElementById('colab-setor').value = '';
+  document.getElementById('colab-dia').value = '';
+  openModal('modal-colab');
+}
+
+function editColab(id) {
+  const c = DB.getArr('colaboradores').find(x => x.id === id);
+  if (!c) return;
+  document.getElementById('colab-edit-id').value = c.id;
+  document.getElementById('colab-modal-title').innerHTML = '<i class="fas fa-pen" style="color:var(--primary)"></i> Editar Colaborador';
+  document.getElementById('colab-nome').value = c.nome;
+  document.getElementById('colab-setor').value = c.setor;
+  document.getElementById('colab-dia').value = c.dia;
+  openModal('modal-colab');
+}
+
+function saveColab() {
+  const nome = document.getElementById('colab-nome').value.trim();
+  const setor = document.getElementById('colab-setor').value.trim();
+  const dia = document.getElementById('colab-dia').value;
+  if (!nome || !setor || !dia) { showToast('Preencha todos os campos obrigatórios.', 'warning'); return; }
+
+  const editId = document.getElementById('colab-edit-id').value;
+  if (editId) {
+    DB.update('colaboradores', editId, { nome, setor, dia });
+    showToast('Colaborador atualizado com sucesso!', 'success');
+  } else {
+    DB.push('colaboradores', { id: uid(), nome, setor, dia, rubrica: false, createdAt: today() });
+    showToast('Colaborador adicionado com sucesso!', 'success');
+  }
+  closeModal('modal-colab');
+  triggerAutosave();
+  refreshPage(currentPage);
+  if (currentPage !== 'colaboradores') refreshPage('dashboard');
+}
+
+function refreshColabTable() {
+  const colabs = DB.getArr('colaboradores');
+  const setores = [...new Set(colabs.map(c => c.setor))].sort();
+  const sel = document.getElementById('colab-filter-setor');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">Todos os setores</option>' + setores.map(s => `<option ${s===cur?'selected':''}>${s}</option>`).join('');
+  filterColabTable();
+  document.getElementById('colab-count-badge').textContent = `${colabs.length} colaboradores`;
+}
+
+function filterColabTable() {
+  const q = document.getElementById('colab-search').value.toLowerCase();
+  const dayF = document.getElementById('colab-filter-day').value;
+  const setF = document.getElementById('colab-filter-setor').value;
+  let colabs = DB.getArr('colaboradores');
+  if (q) colabs = colabs.filter(c => c.nome.toLowerCase().includes(q) || c.setor.toLowerCase().includes(q));
+  if (dayF) colabs = colabs.filter(c => c.dia === dayF);
+  if (setF) colabs = colabs.filter(c => c.setor === setF);
+  const tbody = document.getElementById('colab-tbody');
+  const empty = document.getElementById('colab-empty');
+  if (colabs.length === 0) { tbody.innerHTML=''; empty.classList.remove('hidden'); return; }
+  empty.classList.add('hidden');
+  tbody.innerHTML = colabs.map((c,i) => `
+    <tr>
+      <td class="text-muted text-sm">${i+1}</td>
+      <td><strong>${c.nome}</strong></td>
+      <td><span class="tag">${c.setor}</span></td>
+      <td><span class="badge badge-blue">${c.dia}</span></td>
+      <td>
+        <div class="rubrica-cell">
+          <div class="rubrica-check ${c.rubrica?'signed':''}" onclick="toggleRubrica('${c.id}');refreshColabTable()">
+            ${c.rubrica?'<i class="fas fa-check"></i>':''}
+          </div>
+          <span class="rubrica-text">${c.rubrica?'Confirmado':'Pendente'}</span>
+        </div>
+      </td>
+      <td class="text-muted text-sm">${fmtDate(c.createdAt)}</td>
+      <td>
+        <div class="table-actions">
+          <button class="btn btn-secondary btn-sm btn-icon" onclick="editColab('${c.id}')" title="Editar"><i class="fas fa-pen"></i></button>
+          <button class="btn btn-danger btn-sm btn-icon" onclick="confirmDelete('colab','${c.id}','Excluir o colaborador ${c.nome}?')" title="Excluir"><i class="fas fa-trash"></i></button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function exportColabExcel() {
+  const colabs = DB.getArr('colaboradores');
+  const data = [['#','Nome','Setor','Dia da Semana','Rubrica','Cadastrado em'],
+    ...colabs.map((c,i) => [i+1, c.nome, c.setor, c.dia, c.rubrica?'Sim':'Não', fmtDate(c.createdAt)])];
+  exportToExcel(data, 'Colaboradores', 'colaboradores_dds');
+}
+
+// ─────────────────────────────────────────────
+// DDS RECORDS
+// ─────────────────────────────────────────────
+function openNewDDSModal() {
+  document.getElementById('dds-resp').value = DB.get('week_info')?.responsavel || currentUser?.name || '';
+  document.getElementById('dds-turno').value = DB.get('week_info')?.turno || '';
+  document.getElementById('dds-horario').value = DB.get('week_info')?.horario || '';
+  document.getElementById('dds-data').value = today();
+  document.getElementById('dds-tema').value = '';
+  document.getElementById('dds-obs').value = '';
+  openModal('modal-dds');
+}
+
+function saveDDS() {
+  const resp = document.getElementById('dds-resp').value.trim();
+  const turno = document.getElementById('dds-turno').value;
+  const horario = document.getElementById('dds-horario').value;
+  const data = document.getElementById('dds-data').value;
+  if (!resp || !turno || !horario || !data) { showToast('Preencha todos os campos obrigatórios.', 'warning'); return; }
+  DB.push('dds_records', {
+    id: uid(), responsavel: resp, turno, horario, data,
+    tema: document.getElementById('dds-tema').value.trim(),
+    obs: document.getElementById('dds-obs').value.trim(),
+    createdAt: today(), userId: currentUser?.id
+  });
+  closeModal('modal-dds');
+  triggerAutosave();
+  showToast('DDS registrado com sucesso!', 'success');
+  refreshDDSTable();
+  if (currentPage === 'dashboard') refreshDashboard();
+}
+
+function refreshDDSTable() {
+  filterDDSTable();
+}
+
+function filterDDSTable() {
+  const q = (document.getElementById('dds-search')?.value || '').toLowerCase();
+  const tf = document.getElementById('dds-filter-turno')?.value || '';
+  let recs = DB.getArr('dds_records').slice().reverse();
+  if (q) recs = recs.filter(r => r.responsavel?.toLowerCase().includes(q) || r.tema?.toLowerCase().includes(q));
+  if (tf) recs = recs.filter(r => r.turno === tf);
+  const colabs = DB.getArr('colaboradores');
+  const tbody = document.getElementById('dds-tbody');
+  const empty = document.getElementById('dds-empty');
+  if (recs.length === 0) { tbody.innerHTML=''; empty.classList.remove('hidden'); return; }
+  empty.classList.add('hidden');
+  tbody.innerHTML = recs.map((r,i) => {
+    const cnt = colabs.length;
+    const rubCnt = colabs.filter(c=>c.rubrica).length;
+    return `<tr>
+      <td class="text-muted text-sm">${i+1}</td>
+      <td><strong>${r.responsavel}</strong>${r.tema?`<br><span class="text-muted text-xs">${r.tema}</span>`:''}</td>
+      <td><span class="badge badge-blue">${r.turno}</span></td>
+      <td>${r.horario}</td>
+      <td>${fmtDate(r.data)}</td>
+      <td><span class="badge badge-green">${cnt} colabs.</span></td>
+      <td>
+        <div class="table-actions">
+          <button class="btn btn-secondary btn-sm btn-icon" onclick="viewDDS('${r.id}')" title="Ver detalhes"><i class="fas fa-eye"></i></button>
+          <button class="btn btn-danger btn-sm btn-icon" onclick="confirmDelete('dds_records','${r.id}','Excluir este registro de DDS?')" title="Excluir"><i class="fas fa-trash"></i></button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function viewDDS(id) {
+  const r = DB.getArr('dds_records').find(x=>x.id===id);
+  if (!r) return;
+  const colabs = DB.getArr('colaboradores');
+  const wi = DB.get('week_info') || {};
+  document.getElementById('dds-detail-body').innerHTML = `
+    <div style="margin-bottom:20px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+        <div style="width:46px;height:46px;background:linear-gradient(135deg,#1a6fc4,#0d9e6e);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px"><i class="fas fa-shield-alt"></i></div>
+        <div>
+          <div style="font-size:18px;font-weight:800;color:var(--text)">Diálogo Diário de Segurança</div>
+          <div style="font-size:12px;color:var(--text-muted)">${fmtDate(r.data)} — ${r.turno}</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+        <div class="week-info-item"><div class="week-info-label">Responsável</div><div class="week-info-value">${r.responsavel}</div></div>
+        <div class="week-info-item"><div class="week-info-label">Turno</div><div class="week-info-value">${r.turno}</div></div>
+        <div class="week-info-item"><div class="week-info-label">Horário</div><div class="week-info-value">${r.horario}</div></div>
+        <div class="week-info-item"><div class="week-info-label">Data</div><div class="week-info-value">${fmtDate(r.data)}</div></div>
+      </div>
+      ${r.tema?`<div class="week-info-item" style="margin-bottom:10px"><div class="week-info-label">Tema / Assunto</div><div class="week-info-value">${r.tema}</div></div>`:''}
+      ${r.obs?`<div class="week-info-item"><div class="week-info-label">Observações</div><div class="week-info-value">${r.obs}</div></div>`:''}
+    </div>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Lista de Presença – ${colabs.length} colaboradores</div>
+      ${colabs.length===0?'<p style="color:var(--text-muted);font-size:13px">Nenhum colaborador cadastrado.</p>':
+      `<div class="table-wrap"><table>
+        <thead><tr><th>#</th><th>Nome</th><th>Setor</th><th>Dia</th><th>Rubrica</th></tr></thead>
+        <tbody>${colabs.map((c,i)=>`<tr>
+          <td class="text-sm text-muted">${i+1}</td>
+          <td>${c.nome}</td><td>${c.setor}</td><td>${c.dia}</td>
+          <td>${c.rubrica?'<span class="badge badge-green"><i class="fas fa-check"></i> Confirmado</span>':'<span class="badge badge-yellow">Pendente</span>'}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>`}
+    </div>
+  `;
+  openModal('modal-dds-detail');
+}
+
+function printDDSDetail() {
+  window.print();
+}
+
+// ─────────────────────────────────────────────
+// RESUMOS
+// ─────────────────────────────────────────────
+let currentSummaryTab = 'dia';
+
+function selectSummaryTab(tab) {
+  currentSummaryTab = tab;
+  document.querySelectorAll('.summary-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  ['dia','semana','mes'].forEach(p => {
+    document.getElementById('summary-panel-'+p).classList.toggle('hidden', p !== tab);
+  });
+}
+
+function loadResumos() {
+  const r = DB.get('resumos') || {};
+  const fields = ['resumo-dia','riscos-dia','acoes-dia','resumo-semana','positivos-semana',
+    'melhorias-semana','meta-semana','resumo-mes','total-dds-mes','acidentes-mes',
+    'quase-acidentes-mes','objetivos-mes'];
+  fields.forEach(f => {
+    const el = document.getElementById(f);
+    if (el && r[f] !== undefined) el.value = r[f];
+  });
+  document.getElementById('today-date').textContent = fmtDate(today());
+}
+
+let resumoSaveTimeout = null;
+function autoSaveResumo() {
+  const dot = document.getElementById('resumo-save-dot');
+  const txt = document.getElementById('resumo-save-text');
+  dot.className = 'autosave-dot saving';
+  txt.textContent = 'Salvando...';
+  clearTimeout(resumoSaveTimeout);
+  resumoSaveTimeout = setTimeout(() => {
+    const r = DB.get('resumos') || {};
+    ['resumo-dia','riscos-dia','acoes-dia','resumo-semana','positivos-semana',
+     'melhorias-semana','meta-semana','resumo-mes','total-dds-mes','acidentes-mes',
+     'quase-acidentes-mes','objetivos-mes'].forEach(f => {
+      const el = document.getElementById(f); if (el) r[f] = el.value;
+    });
+    DB.set('resumos', r);
+    dot.className = 'autosave-dot saved';
+    txt.textContent = 'Salvo automaticamente';
+  }, 1200);
+}
+
+// ─────────────────────────────────────────────
+// RELATÓRIOS
+// ─────────────────────────────────────────────
+function refreshRelatorios() {
+  filterRelTable();
+  renderChartMensal();
+}
+
+function filterRelTable() {
+  const q = (document.getElementById('rel-search')?.value||'').toLowerCase();
+  const df = document.getElementById('rel-date-from')?.value||'';
+  const dt = document.getElementById('rel-date-to')?.value||'';
+  let recs = DB.getArr('dds_records').slice().reverse();
+  if (q) recs = recs.filter(r => r.responsavel?.toLowerCase().includes(q)||r.tema?.toLowerCase().includes(q));
+  if (df) recs = recs.filter(r => r.data >= df);
+  if (dt) recs = recs.filter(r => r.data <= dt);
+  const colabs = DB.getArr('colaboradores');
+  const rubCnt = colabs.filter(c=>c.rubrica).length;
+  document.getElementById('rel-stat-dds').textContent = recs.length;
+  document.getElementById('rel-stat-colab').textContent = colabs.length;
+  document.getElementById('rel-stat-rubricas').textContent = rubCnt;
+  document.getElementById('rel-count-badge').textContent = `${recs.length} registros`;
+  const tbody = document.getElementById('rel-tbody');
+  const empty = document.getElementById('rel-empty');
+  if (recs.length===0) { tbody.innerHTML=''; empty.classList.remove('hidden'); return; }
+  empty.classList.add('hidden');
+  tbody.innerHTML = recs.map((r,i)=>`<tr>
+    <td class="text-muted text-sm">${i+1}</td>
+    <td>${fmtDate(r.data)}</td>
+    <td><strong>${r.responsavel}</strong>${r.tema?`<br><span class="text-xs text-muted">${r.tema}</span>`:''}</td>
+    <td><span class="badge badge-blue">${r.turno}</span></td>
+    <td>${r.horario}</td>
+    <td><span class="badge badge-green">${colabs.length}</span></td>
+    <td><span class="badge badge-yellow">${rubCnt}</span></td>
+    <td>
+      <div class="table-actions">
+        <button class="btn btn-secondary btn-sm btn-icon" onclick="viewDDS('${r.id}')" title="Ver"><i class="fas fa-eye"></i></button>
+        <button class="btn btn-primary btn-sm btn-icon" onclick="exportSinglePDF('${r.id}')" title="PDF"><i class="fas fa-file-pdf"></i></button>
+      </div>
+    </td>
+  </tr>`).join('');
+}
+
+function clearRelFilters() {
+  document.getElementById('rel-search').value = '';
+  document.getElementById('rel-date-from').value = '';
+  document.getElementById('rel-date-to').value = '';
+  filterRelTable();
+}
+
+function exportRelPDF() { window.print(); showToast('Abrindo diálogo de impressão/PDF...', 'info'); }
+
+function exportRelExcel() {
+  const recs = DB.getArr('dds_records');
+  const colabs = DB.getArr('colaboradores');
+  const data = [
+    ['#','Data','Responsável','Turno','Horário','Tema','Observações','Colaboradores','Rubricas'],
+    ...recs.map((r,i)=>[i+1,fmtDate(r.data),r.responsavel,r.turno,r.horario,r.tema||'',r.obs||'',colabs.length,colabs.filter(c=>c.rubrica).length])
+  ];
+  exportToExcel(data,'Relatório DDS','relatorio_dds');
+}
+
+function exportSinglePDF(id) {
+  viewDDS(id);
+  setTimeout(()=>{ window.print(); }, 500);
+}
+
+// ─────────────────────────────────────────────
+// ADMIN
+// ─────────────────────────────────────────────
+function refreshAdmin() {
+  const users = DB.getArr('users');
+  const dds = DB.getArr('dds_records');
+  const colabs = DB.getArr('colaboradores');
+  const pending = users.filter(u=>u.status==='pendente').length;
+
+  document.getElementById('admin-total-users').textContent = users.length;
+  document.getElementById('admin-pending-users').textContent = pending;
+  document.getElementById('admin-total-dds').textContent = dds.length;
+  document.getElementById('admin-total-colab').textContent = colabs.length;
+  document.getElementById('admin-active-user').textContent = currentUser?.name || '—';
+  document.getElementById('last-access').textContent = fmtDateTime();
+
+  // Storage info
+  let sz = 0;
+  for (let k in localStorage) { if (k.startsWith('dds_')) sz += (localStorage[k]||'').length; }
+  document.getElementById('storage-info').textContent = (sz/1024).toFixed(1) + ' KB usado';
+
+  // Recent DDS
+  const recent = dds.slice(-5).reverse();
+  document.getElementById('admin-recent-tbody').innerHTML = recent.map(r=>`<tr>
+    <td>${fmtDate(r.data)}</td>
+    <td>${r.responsavel}</td>
+    <td><span class="badge badge-blue">${r.turno}</span></td>
+    <td>${colabs.length}</td>
+    <td>${colabs.filter(c=>c.rubrica).length}</td>
+    <td><span class="badge badge-green">Concluído</span></td>
+  </tr>`).join('') || '<tr><td colspan="6" class="text-muted text-sm" style="text-align:center;padding:20px">Nenhum registro</td></tr>';
+
+  renderChartAtividade();
+}
+
+function refreshUsers() {
+  filterUserTable();
+  updatePendingBadge();
+}
+
+function filterUserTable() {
+  const q = (document.getElementById('user-search')?.value||'').toLowerCase();
+  const sf = document.getElementById('user-filter-status')?.value||'';
+  let users = DB.getArr('users');
+  if (q) users = users.filter(u=>u.name.toLowerCase().includes(q)||u.email.toLowerCase().includes(q));
+  if (sf) users = users.filter(u=>u.status===sf);
+  const tbody = document.getElementById('users-tbody');
+  const empty = document.getElementById('users-empty');
+  if (users.length===0) { tbody.innerHTML=''; empty.classList.remove('hidden'); return; }
+  empty.classList.add('hidden');
+  tbody.innerHTML = users.map((u,i)=>`<tr>
+    <td class="text-muted text-sm">${i+1}</td>
+    <td>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#1a6fc4,#0d9e6e);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0">${initials(u.name)}</div>
+        <strong>${u.name}</strong>
+      </div>
+    </td>
+    <td class="text-sm">${u.email}</td>
+    <td><span class="tag">${u.setor||'—'}</span></td>
+    <td><span class="badge ${u.role==='admin'?'badge-blue':'badge-green'}">${u.role==='admin'?'Admin':'Usuário'}</span></td>
+    <td>
+      <span class="badge ${u.status==='ativo'?'badge-green':u.status==='pendente'?'badge-yellow':'badge-red'}">
+        ${u.status==='ativo'?'Ativo':u.status==='pendente'?'Pendente':'Inativo'}
+      </span>
+    </td>
+    <td class="text-sm text-muted">${fmtDate(u.createdAt)}</td>
+    <td>
+      <div class="table-actions">
+        ${u.status!=='ativo'?`<button class="btn btn-success btn-sm" onclick="setUserStatus('${u.id}','ativo')" title="Ativar"><i class="fas fa-check"></i></button>`:''}
+        ${u.status==='ativo'&&u.id!==currentUser?.id?`<button class="btn btn-secondary btn-sm" onclick="setUserStatus('${u.id}','inativo')" title="Desativar"><i class="fas fa-ban"></i></button>`:''}
+        ${u.id!==currentUser?.id?`<button class="btn btn-danger btn-sm btn-icon" onclick="confirmDelete('users','${u.id}','Excluir o usuário ${u.name}?')" title="Excluir"><i class="fas fa-trash"></i></button>`:''}
+      </div>
+    </td>
+  </tr>`).join('');
+}
+
+function setUserStatus(id, status) {
+  DB.update('users', id, { status });
+  showToast(`Usuário ${status==='ativo'?'ativado':'desativado'} com sucesso!`, 'success');
+  refreshUsers();
+  refreshAdmin();
+}
+
+function updatePendingBadge() {
+  const cnt = DB.getArr('users').filter(u=>u.status==='pendente').length;
+  const badge = document.getElementById('nav-pending-count');
+  if (badge) { badge.textContent = cnt; badge.style.display = cnt>0?'inline':'none'; }
+}
+
+function exportFullDB() {
+  const wb = XLSX.utils.book_new();
+  // DDS Sheet
+  const dds = DB.getArr('dds_records');
+  const colabs = DB.getArr('colaboradores');
+  const users = DB.getArr('users');
+  const ddsData = [['ID','Data','Responsável','Turno','Horário','Tema','Observações'],
+    ...dds.map(r=>[r.id,fmtDate(r.data),r.responsavel,r.turno,r.horario,r.tema||'',r.obs||''])];
+  const colabData = [['ID','Nome','Setor','Dia','Rubrica','Cadastrado'],
+    ...colabs.map(c=>[c.id,c.nome,c.setor,c.dia,c.rubrica?'Sim':'Não',fmtDate(c.createdAt)])];
+  const userData = [['ID','Nome','E-mail','Setor','Perfil','Status','Cadastro'],
+    ...users.map(u=>[u.id,u.name,u.email,u.setor||'',u.role,u.status,fmtDate(u.createdAt)])];
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(ddsData), 'DDS');
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(colabData), 'Colaboradores');
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(userData), 'Usuarios');
+  XLSX.writeFile(wb, `banco_completo_dds_${today()}.xlsx`);
+  showToast('Banco de dados exportado com sucesso!', 'success');
+}
+
+// ─────────────────────────────────────────────
+// DELETE CONFIRM
+// ─────────────────────────────────────────────
+function confirmDelete(collection, id, msg) {
+  document.getElementById('confirm-msg').textContent = msg || 'Tem certeza que deseja excluir?';
+  const btn = document.getElementById('confirm-ok-btn');
+  btn.onclick = () => {
+    DB.remove(collection, id);
+    closeModal('modal-confirm');
+    showToast('Item excluído com sucesso.', 'info');
+    refreshPage(currentPage);
+    if (currentPage !== 'dashboard') refreshPage('dashboard');
+    updatePendingBadge();
+  };
+  openModal('modal-confirm');
+}
+
+// ─────────────────────────────────────────────
+// EXCEL EXPORT UTILITY
+// ─────────────────────────────────────────────
+function exportToExcel(data, sheetName, filename) {
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet(data);
+  // Style header row (basic)
+  const range = XLSX.utils.decode_range(ws['!ref']);
+  for (let c = range.s.c; c <= range.e.c; c++) {
+    const addr = XLSX.utils.encode_cell({r:0,c});
+    if (!ws[addr]) continue;
+    ws[addr].s = { font:{bold:true}, fill:{fgColor:{rgb:'1a6fc4'}}, font:{color:{rgb:'FFFFFF'},bold:true} };
+  }
+  XLSX.utils.book_append_sheet(wb, ws, sheetName);
+  XLSX.writeFile(wb, `${filename}_${today()}.xlsx`);
+  showToast('Arquivo Excel exportado com sucesso!', 'success');
+}
+
+// ─────────────────────────────────────────────
+// AUTH FORMS
+// ─────────────────────────────────────────────
+document.getElementById('login-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-password').value;
+  const btn = document.getElementById('login-btn');
+  const errDiv = document.getElementById('login-error');
+  btn.innerHTML = '<span class="spinner"></span> Entrando...';
+  btn.disabled = true;
+  errDiv.classList.add('hidden');
+  setTimeout(() => {
+    const res = login(email, pass);
+    btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar no Sistema';
+    btn.disabled = false;
+    if (res.ok) {
+      showToast('Login realizado com sucesso!', 'success');
+      showApp();
+    } else {
+      errDiv.querySelector('span').textContent = res.msg;
+      errDiv.classList.remove('hidden');
+    }
+  }, 700);
+});
+
+document.getElementById('register-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const pass = document.getElementById('reg-password').value;
+  const setor = document.getElementById('reg-setor').value.trim();
+  const btn = document.getElementById('register-btn');
+  const errDiv = document.getElementById('register-error');
+  const okDiv = document.getElementById('register-success');
+  btn.innerHTML = '<span class="spinner"></span> Criando conta...';
+  btn.disabled = true;
+  errDiv.classList.add('hidden');
+  okDiv.classList.add('hidden');
+  setTimeout(() => {
+    const res = register(name, email, pass, setor);
+    btn.innerHTML = '<i class="fas fa-user-plus"></i> Criar Conta';
+    btn.disabled = false;
+    if (res.ok) {
+      okDiv.querySelector('span').textContent = 'Conta criada! Aguarde aprovação do administrador para acessar.';
+      okDiv.classList.remove('hidden');
+      document.getElementById('register-form').reset();
+      updatePendingBadge();
+    } else {
+      errDiv.querySelector('span').textContent = res.msg;
+      errDiv.classList.remove('hidden');
+    }
+  }, 700);
+});
+
+// Close modals on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) closeModal(overlay.id);
+  });
+});
+
+// Keyboard ESC close modals
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(m => closeModal(m.id));
+  }
+});
+
+// ─────────────────────────────────────────────
+// BOOT
+// ─────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  initDefaultUsers();
+  // Simulate loading
+  setTimeout(() => {
+    document.getElementById('page-loader').style.opacity = '0';
+    document.getElementById('page-loader').style.transition = 'opacity .4s ease';
+    setTimeout(() => document.getElementById('page-loader').style.display = 'none', 400);
+    if (checkSession()) {
+      showApp();
+    } else {
+      showAuthPage();
+    }
+  }, 1400);
+});
+</script>
+</body>
+</html>
